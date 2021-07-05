@@ -19,6 +19,8 @@ class CreateOrder extends Component
     public $amount;
     public $animal_choices;
     public $total;
+    public $checkout_message;
+    public $view_form = true;
 
     protected $rules = [
         'customer_name'     => 'required|min:6',
@@ -39,7 +41,6 @@ class CreateOrder extends Component
     public function submit()
     {
         $this->total = $this->qty * $this->price;
-        Order::create($this->validate());
     }
 
     public function showciudades($id)
@@ -51,10 +52,18 @@ class CreateOrder extends Component
         $this->amount = $this->qty;
     }
 
+    public function createCheckout(){
+        Order::create($this->validate());
+        $this->checkout_message = "Checkout has been add to our system!.";
+    }
+
 
     public function render()
     {   
         $this->animal_choices = Animal::all();
+        if(count($this->animal_choices) < 1){
+            $this->view_form = false;
+        }
         return view('livewire.create-order');
     }
 }
