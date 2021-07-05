@@ -19,7 +19,6 @@ class CreateOrdersTable extends Migration
             $table->string('customer_phone');
             $table->string('customer_address');
             $table->integer('qty');
-            $table->integer('amount');
             $table->string('name');
             $table->integer('price');
             $table->integer('weight');
