@@ -25,6 +25,7 @@ class AddAnimal extends Component
     public function submit()
     {
         Animal::create($this->validate());
+        return redirect()->to("/animal/list");
     }
 
     public function render()

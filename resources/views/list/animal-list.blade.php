@@ -1,10 +1,22 @@
 @extends('layouts.app')
 @section('content')
-<div x-data="{modalUpdate:false, modalDetail:false, animalData:{id:null,name:null, price:null, weight:null}}">
+<div x-data="{showForm:false,update:false,create:false,modalUpdate:false, modalDetail:false, animalData:{id:null,name:null, price:null, weight:null}}">
     <div class="max-w-5xl mx-auto mt-5">
         <h1 class="mb-5">Animal List : </h1>
         <div class="my-10 p-5 border border-gray-500 rounded-md">
-            <livewire:animals-table />
+            <div x-show="!showForm">
+              <button @click="showForm=!showForm;update=false;create=true" wire:click="$emit('setCreateAnimal')" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">Create Order</button>
+              <livewire:animals-table />
+            </div>
+            <div x-show="showForm">
+            <button @click="showForm=!showForm" wire:click="$emit('refreshLivewireDatatable')" class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3 mb-3">Back</button>
+              <div x-show="create">
+                <livewire:add-animal>
+              </div>
+              <div x-show="update">
+                <livewire:edit-animal>
+              </div>
+            </div>
         </div>
     </div>
     <div

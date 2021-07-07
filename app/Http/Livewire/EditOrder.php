@@ -12,6 +12,7 @@ class EditOrder extends Component
     public $customer_name;
     public $customer_phone;
     public $customer_address;
+    public $animalId;
     public $qty;
     public $name;
     public $price;
@@ -22,6 +23,7 @@ class EditOrder extends Component
     public $checkout_message;
     public $view_form = true;
     public $pk_id;
+    protected $listeners = ["UpdateOrder" => "mount"];
 
     protected $rules = [
         'customer_name'     => 'required|min:6',
@@ -31,7 +33,8 @@ class EditOrder extends Component
         'name'              => 'required',
         'price'             => 'required',
         'weight'            => 'required',
-        'amount'            => 'required'
+        'amount'            => 'required',
+        'animalId'          => 'required'
     ];
 
     public function updated($property_name)
@@ -45,32 +48,45 @@ class EditOrder extends Component
         $this->amount = $this->qty * $this->price;
     }
 
-    public function mount(){
-        $selected = Order::where("id", "=", request("id"))->firstOrFail();
-        $this->customer_name = $selected->customer_name;
-        $this->customer_phone = $selected->customer_phone;
-        $this->customer_address = $selected->customer_address;
-        $this->name = $selected->name;
-        $this->qty = $selected->qty;
-        $this->amount = $selected->amount;
-        $this->weight = $selected->weight;
-        $this->price = $selected->price;
-        $this->pk_id = request("id");
+    public function mount($id=null){
+        $selected = Order::where("id", "=", $id)->first();
+        if($selected != null){
+            $this->pk_id = $id;
+            $this->customer_name = $selected->customer_name;
+            $this->customer_phone = $selected->customer_phone;
+            $this->customer_address = $selected->customer_address;
+            $this->animalId = $selected->animalId;
+            $this->name = $selected->name;
+            $this->qty = $selected->qty;
+            $this->amount = $selected->amount;
+            $this->weight = $selected->weight;
+            $this->price = $selected->price;
+        }
     }
 
-    public function showciudades($id)
+    public function showincludeEdit($id)
     {
-        $selected = Animal::where('id', '=',$id)->firstOrFail();
-        // Array Null
-        $this->price = $selected->price;
-        $this->name = $selected->name;
-        $this->weight = $selected->weight;
-        $this->amount = $this->qty * $selected->price;
+        if((int)$id != 0){
+            $selected = Animal::where('id', '=',$id)->firstOrFail();
+            // Array Null
+            $this->price = $selected->price;
+            $this->name = $selected->name;
+            $this->weight = $selected->weight;
+            $this->amount = $this->qty * $selected->price;
+            $this->animalId = $id;
+        } else {
+            $this->price = 0;
+            $this->name = "false";
+            $this->weight = "false";
+            $this->amount= 0;
+            $this->animalId = 0;
+        }
     }
 
     public function EditCheckout(){
         Order::where('id', '=',$this->pk_id)->update($this->validate());
         $this->checkout_message = "Checkout has been updated!.";
+        return redirect()->to("/order/list");
     }
     public function render()
     {

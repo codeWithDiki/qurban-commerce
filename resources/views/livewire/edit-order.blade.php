@@ -5,32 +5,35 @@
             <form wire:submit.prevent="submit">
                 <label for="customer_name" class="block text-sm font-medium text-gray-700">Customer Name : </label>
                 <div class="mt-1">
-                    <input type="text" wire:model="customer_name" id="customer_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    <input type="text" wire:model="customer_name" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     @error('customer_name') <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <label for="customer_phone" class="block text-sm font-medium text-gray-700">Customer Phone : </label>
                 <div class="mt-1">
-                    <input type="text" wire:model="customer_phone" id="customer_phone" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    <input type="text" wire:model="customer_phone" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     @error('customer_phone') <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <label for="customer_address" class="block text-sm font-medium text-gray-700">Customer Address : </label>
                 <div class="mt-1">
-                    <input type="text" wire:model="customer_address" id="customer_address" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    <input type="text" wire:model="customer_address" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     @error('customer_address') <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <label for="qty" class="block text-sm font-medium text-gray-700">Quantity : </label>
                 <div class="mt-1">
-                    <input type="text" wire:model="qty" id="qty" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    <input type="text" wire:model="qty" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     @error('qty') <span class="error">{{ $message }}</span> @enderror
                 </div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Animal : </label>
                 <div class="mt-1">
-                    <select class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                            <option>
+                    <select wire:change="showincludeEdit($event.target.value)" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="0">
                                 ---
                             </option>
                         @foreach ($animal_choices as $animal)
-                            <option value="{{ $animal->id }}" wire:click="showciudades({{$animal->id}})">
+                            <option value="{{ $animal->id }}" 
+                            @if($animal->id == $animalId) 
+                            selected="true"
+                            @endif>
                                 {{ $animal->name }}
                             </option>
                         @endforeach
@@ -72,7 +75,7 @@
             <div>
                 <span x-show="!submited">
                     <button @click="open = !open" class="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">I need to edit some..</button>
-                    <button wire:click="EditCheckout()" @click="submited = !submited" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">Save</button>
+                    <button wire:click="EditCheckout()" @click="open=!open" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">Save</button>
                 </span>
             </div>
             <div>

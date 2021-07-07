@@ -22,7 +22,8 @@ class CreateOrdersTable extends Migration
             $table->string('name');
             $table->integer('price');
             $table->integer('weight');
-
+            $table->integer('animalId');
+            $table->integer('amount');
             $table->softDeletes();
             $table->timestamps();
         });

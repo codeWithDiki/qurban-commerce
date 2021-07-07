@@ -25,12 +25,12 @@
                 </div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Animal : </label>
                 <div class="mt-1">
-                    <select class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                            <option>
+                    <select wire:change="showciudades($event.target.value)" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="0">
                                 ---
                             </option>
                         @foreach ($animal_choices as $animal)
-                            <option value="{{ $animal->id }}" wire:click="showciudades({{$animal->id}})">
+                            <option value="{{ $animal->id }}">
                                 {{ $animal->name }}
                             </option>
                         @endforeach
@@ -75,8 +75,9 @@
                     <button wire:click="createCheckout()" @click="submited = !submited" class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-3">Pay</button>
                 </span>
             </div>
-            <div>
+            <div x-show="submited">
                 {{$checkout_message}}
+                
             </div>
         </span>
     </div>

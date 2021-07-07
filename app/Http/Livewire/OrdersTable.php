@@ -24,10 +24,10 @@ class OrdersTable extends LivewireDatatable
             Column::name("customer_name")
                 ->label("Customer Name")
                 ->filterable(),
-            NumberColumn::name("customer_phone")
+            Column::name("customer_phone")
                 ->label("Customer Phone")
                 ->filterable(),
-            NumberColumn::name("customer_address")
+            Column::name("customer_address")
                 ->label("Customer Address")
                 ->filterable(),
             Column::callback([

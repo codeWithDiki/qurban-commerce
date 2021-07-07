@@ -17,6 +17,7 @@ class CreateOrder extends Component
     public $price;
     public $weight;
     public $amount;
+    public $animalId;
     public $animal_choices;
     public $total;
     public $checkout_message;
@@ -30,7 +31,8 @@ class CreateOrder extends Component
         'name'              => 'required',
         'price'             => 'required',
         'weight'            => 'required',
-        'amount'            => 'required'
+        'amount'            => 'required',
+        'animalId'          => 'required|integer'
     ];
 
     public function updated($property_name)
@@ -45,17 +47,32 @@ class CreateOrder extends Component
 
     public function showciudades($id)
     {
-        $selected = Animal::where('id', '=',$id)->firstOrFail();
-        // Array Null
-        $this->price = $selected->price;
-        $this->name = $selected->name;
-        $this->weight = $selected->weight;
-        $this->amount = $this->qty * $selected->price;
+        if((int)$id != 0){
+            $selected = Animal::where('id', '=',$id)->firstOrFail();
+            // Array Null
+            $this->price = $selected->price;
+            $this->name = $selected->name;
+            $this->weight = $selected->weight;
+            $this->amount = $this->qty * $selected->price;
+            $this->animalId = $id;
+        } else {
+            $this->price = 0;
+            $this->name = "false";
+            $this->weight = "false";
+            $this->amount= 0;
+            $this->animalId = 0;
+        }
+    }
+
+    public function clearForm(){
+        $this->reset();
+        $this->emit("refreshLivewireDatatable");
     }
 
     public function createCheckout(){
         Order::create($this->validate());
         $this->checkout_message = "Checkout has been add to our system!.";
+        return redirect()->to("/order/list");
     }
 
 

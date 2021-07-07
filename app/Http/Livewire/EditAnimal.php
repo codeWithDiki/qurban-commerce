@@ -11,6 +11,7 @@ class EditAnimal extends Component
     public $price;
     public $weight;
     public $fk_id;
+    protected $listeners = ["UpdateAnimal" => "mount"];
 
     public $rules = [
         'name' => 'required|min:6',
@@ -26,16 +27,19 @@ class EditAnimal extends Component
     public function submit()
     {
         Animal::where('id', '=', $this->fk_id)->update($this->validate());
+        return redirect()->to("/animal/list");
     }
 
-    public function mount(){
-        $this->fk_id = request('id');
+    public function mount($id=null){
+        $this->fk_id = $id;
 
-        $selected = Animal::where('id', '=',$this->fk_id)->firstOrFail();
+        $selected = Animal::where('id', '=',$this->fk_id)->first();
         // Array Null
-        $this->price = $selected->price;
-        $this->name = $selected->name;
-        $this->weight = $selected->weight;
+        if($selected != null){
+            $this->price = $selected->price;
+            $this->name = $selected->name;
+            $this->weight = $selected->weight;
+        }
     }
 
     public function render()
