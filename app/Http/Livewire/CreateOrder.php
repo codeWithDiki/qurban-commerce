@@ -5,11 +5,13 @@ namespace App\Http\Livewire;
 use App\Models\Order;
 use Livewire\Component;
 use App\Models\Animal;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class CreateOrder extends Component
 {
 
-    public $customer_name = "";
+    public $customer_name;
     public $customer_phone;
     public $customer_address;
     public $qty;
@@ -20,6 +22,8 @@ class CreateOrder extends Component
     public $animalId;
     public $animal_choices;
     public $total;
+    public $status = "not_verifed";
+    public $customer_email;
     public $checkout_message;
     public $view_form = true;
 
@@ -32,7 +36,9 @@ class CreateOrder extends Component
         'price'             => 'required',
         'weight'            => 'required',
         'amount'            => 'required',
-        'animalId'          => 'required|integer'
+        'animalId'          => 'required|integer',
+        'customer_email'    => 'nullable|email',
+        'status'            => 'required'
     ];
 
     public function updated($property_name)
@@ -66,13 +72,15 @@ class CreateOrder extends Component
 
     public function clearForm(){
         $this->reset();
-        $this->emit("refreshLivewireDatatable");
     }
 
     public function createCheckout(){
-        Order::create($this->validate());
+        $id = Order::insertGetId($this->validate());
         $this->checkout_message = "Checkout has been add to our system!.";
-        return redirect()->to("/order/list");
+        if($this->customer_email != null){
+            Mail::to($this->customer_email)->send(new OrderMail($id));
+            $this->checkout_message = "Checkout has been add to our system, please check your email to verify your invoice!.";
+        }
     }
 
 

@@ -35,19 +35,22 @@ class OrdersTable extends LivewireDatatable
                 'customer_name',
                 'customer_phone',
                 'customer_address',
+                'customer_email',
                 'qty',
                 'name',
                 'price',
-                'weight'], function ($id, $customer_name, $customer_phone, $customer_address, $qty, $name, $price, $weight) {
-                $total = $qty * $price;
+                'weight',
+                'status',
+                'amount'], function ($id, $customer_name, $customer_phone, $customer_address, $customer_email, $qty, $name, $price, $weight, $status, $amount) {
                 return view('buttons.buttons-order', compact('id',
                 'customer_name',
                 'customer_phone',
                 'customer_address',
+                'customer_email',
                 'qty',
                 'name',
                 'price',
-                'weight', 'total'));
+                'weight','status','amount'));
             })->label("Actions")
        ];
     }

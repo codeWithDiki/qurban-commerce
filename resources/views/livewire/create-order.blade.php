@@ -13,6 +13,11 @@
                     <input type="text" wire:model="customer_phone" id="customer_phone" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
                     @error('customer_phone') <span class="error">{{ $message }}</span> @enderror
                 </div>
+                <label for="customer_phone" class="block text-sm font-medium text-gray-700">Customer Email : </label>
+                <div class="mt-1">
+                    <input type="email" wire:model="customer_email" id="customer_email" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                    @error('customer_email') <span class="error">{{ $message }}</span> @enderror
+                </div>
                 <label for="customer_address" class="block text-sm font-medium text-gray-700">Customer Address : </label>
                 <div class="mt-1">
                     <input type="text" wire:model="customer_address" id="customer_address" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">

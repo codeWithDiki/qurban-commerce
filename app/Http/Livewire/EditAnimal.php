@@ -31,7 +31,16 @@ class EditAnimal extends Component
     }
 
     public function mount($id=null){
-        $this->fk_id = $id;
+        if($id != null){
+            $this->fk_id = (int)$id;
+        } else {
+            $id = (int)request("id");
+            if($id != null){
+                $this->fk_id = $id;
+            } else {
+                $this->fk_id = null;
+            }
+        }
 
         $selected = Animal::where('id', '=',$this->fk_id)->first();
         // Array Null

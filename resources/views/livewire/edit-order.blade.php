@@ -1,4 +1,5 @@
 @if($view_form == true)
+@if($status_flag == true)
 <div>
     <div x-data="{ open: false, submited:false }">
         <span x-show='!open'>
@@ -84,6 +85,9 @@
         </span>
     </div>
 </div>
+@else
+<div>This order is on proccess, you could'nt edit this order!</div>
+@endif
 @else
 <div>Input Animal First!</div>
 @endif

@@ -24,6 +24,8 @@ class CreateOrdersTable extends Migration
             $table->integer('weight');
             $table->integer('animalId');
             $table->integer('amount');
+            $table->string('customer_email')->nullable();
+            $table->enum("status", ["not_verifed", "canceled", "pending", "processed", "success"]);
             $table->softDeletes();
             $table->timestamps();
         });

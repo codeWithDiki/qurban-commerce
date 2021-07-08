@@ -20,9 +20,12 @@ class EditOrder extends Component
     public $amount;
     public $animal_choices;
     public $total;
+    public $customer_email;
     public $checkout_message;
     public $view_form = true;
+    public $status;
     public $pk_id;
+    public $status_flag;
     protected $listeners = ["UpdateOrder" => "mount"];
 
     protected $rules = [
@@ -34,7 +37,8 @@ class EditOrder extends Component
         'price'             => 'required',
         'weight'            => 'required',
         'amount'            => 'required',
-        'animalId'          => 'required'
+        'animalId'          => 'required',
+        'customer_email'    => 'email'
     ];
 
     public function updated($property_name)
@@ -49,7 +53,16 @@ class EditOrder extends Component
     }
 
     public function mount($id=null){
-        $selected = Order::where("id", "=", $id)->first();
+        if($id != null){
+            $selected = Order::where("id", "=", $id)->first();
+        } else {
+            $id = request("id");
+            if ($id != null){
+                $selected = Order::where("id", "=", $id)->first();
+            } else {
+                $selected = null;
+            }
+        }
         if($selected != null){
             $this->pk_id = $id;
             $this->customer_name = $selected->customer_name;
@@ -61,6 +74,11 @@ class EditOrder extends Component
             $this->amount = $selected->amount;
             $this->weight = $selected->weight;
             $this->price = $selected->price;
+            $this->status = $selected->status;
+            $this->customer_email = $selected->customer_email;
+            if($selected->status != "not_verifed"){
+                $this->status_flag = false;
+            }
         }
     }
 
