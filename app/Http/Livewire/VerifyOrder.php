@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Order;
 use App\Mail\verifyOrderSuccess;
 use Illuminate\Support\Facades\Mail;
-
+use App\Jobs\SendMail;
 class VerifyOrder extends Component
 {
     public $order_id;
@@ -48,7 +48,7 @@ class VerifyOrder extends Component
 
     public function updateStatus(){
         Order::where("id", "=", $this->order_id)->update(array("status" => "pending"));
-        Mail::to($this->customer_email)->send(new verifyOrderSuccess($this->order_id));
+        SendMail::dispatch($this->order_id, $this->customer_email, 'VerifyOrder')->onQueue("Mail_Sender");
     }
 
     public function render()

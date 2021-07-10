@@ -1,3 +1,4 @@
+@component('mail::message')
 <h1>Here's your checkout : </h1>
 -----------------------
 <h4>User Info : </h4>
@@ -26,3 +27,4 @@
 </div>
 -----------------------
 <div><b>Your order is success!</b></div>
+@endcomponent

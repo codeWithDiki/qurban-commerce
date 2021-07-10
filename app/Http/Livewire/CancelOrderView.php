@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Mail\CancelOrder;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Order;
+use App\Jobs\SendMail;
 class CancelOrderView extends Component
 {
     public $order_id;
@@ -47,7 +48,7 @@ class CancelOrderView extends Component
 
     public function updateStatus(){
         Order::where("id", "=", $this->order_id)->update(array("status" => "canceled"));
-        Mail::to($this->customer_email)->send(new CancelOrder($this->order_id));
+        SendMail::dispatch($this->order_id, $this->customer_email, 'CancelOrder')->onQueue("Mail_Sender");
     }
     public function render()
     {

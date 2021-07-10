@@ -18,11 +18,22 @@ class ViewOrder extends Component
     public $weight;
     public $status;
     public $amount;
+    public $pk_id;
+    public $view_button = true;
 
-    public function mount(){
-        $id = request("id");
+    public function mount($order_id = null){
+        if($order_id == null){
+            $id = request("id");
+        } else {
+            $id = $order_id;
+        }
+
         if($id != null){
-            $selected = Order::where("id", "=", (int)$id)->firstOrFail();
+            if($this->pk_id != null){
+                $selected = Order::where("id", "=", $this->pk_id)->firstOrFail();
+            } else {
+                $selected = Order::where("id", "=", (int)$id)->firstOrFail();
+            }
             $this->customer_name = $selected->customer_name;
             $this->customer_phone = $selected->customer_phone;
             $this->customer_address = $selected->customer_address;

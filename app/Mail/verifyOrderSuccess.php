@@ -45,6 +45,6 @@ class verifyOrderSuccess extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.verify');
+        return $this->markdown('mail.verify');
     }
 }

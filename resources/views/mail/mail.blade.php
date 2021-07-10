@@ -1,3 +1,4 @@
+@component('mail::message')
 <h1>Here's your checkout : </h1>
 -----------------------
 <h4>User Info : </h4>
@@ -24,13 +25,9 @@
 <div>
 <b>Quantity : </b>{{$qty}}
 </div>
------------------------
 <div>
-<b>Verify your checkout here : </b> bootcamp.test:8000/order/verify?id={{$order_id}}
+@component('mail::button', ['url' => "bootcamp.test:8000/order/verify?id=".$order_id])
+Verify Order
+@endcomponent
 </div>
-<div>
-<b>Edit your invoice here : </b> bootcamp.test:8000/order/edit?id={{$order_id}}
-</div>
-<div>
-<b>Cancel your checkout here : </b> bootcamp.test:8000/order/cancel?id={{$order_id}}
-</div>
+@endcomponent

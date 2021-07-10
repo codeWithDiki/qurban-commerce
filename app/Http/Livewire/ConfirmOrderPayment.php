@@ -6,6 +6,7 @@ use Livewire\Component;
 use Illuminate\Http\Request;
 use App\Mail\PaymentConfirmed;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendMail;
 class ConfirmOrderPayment extends Component
 {
     public $order_id;
@@ -47,7 +48,7 @@ class ConfirmOrderPayment extends Component
 
     public function updateStatus(){
         Order::where("id", "=", $this->order_id)->update(array("status" => "processed"));
-        Mail::to($this->customer_email)->send(new PaymentConfirmed($this->order_id));
+        SendMail::dispatch($this->order_id, $this->customer_email, 'PaymentConfirmed')->onQueue("Mail_Sender");
     }
 
     public function render()

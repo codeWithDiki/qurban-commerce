@@ -7,7 +7,7 @@ use Livewire\Component;
 use App\Models\Animal;
 use App\Mail\OrderMail;
 use Illuminate\Support\Facades\Mail;
-
+use App\Jobs\SendMail;
 class CreateOrder extends Component
 {
 
@@ -31,11 +31,11 @@ class CreateOrder extends Component
         'customer_name'     => 'required|min:6',
         'customer_phone'    => 'required|min:11',
         'customer_address'  => 'required',
-        'qty'               => 'required',
+        'qty'               => 'required|integer',
         'name'              => 'required',
-        'price'             => 'required',
-        'weight'            => 'required',
-        'amount'            => 'required',
+        'price'             => 'required|integer',
+        'weight'            => 'required|integer',
+        'amount'            => 'required|integer',
         'animalId'          => 'required|integer',
         'customer_email'    => 'nullable|email',
         'status'            => 'required'
@@ -78,7 +78,7 @@ class CreateOrder extends Component
         $id = Order::insertGetId($this->validate());
         $this->checkout_message = "Checkout has been add to our system!.";
         if($this->customer_email != null){
-            Mail::to($this->customer_email)->send(new OrderMail($id));
+            SendMail::dispatch($id, $this->customer_email, 'CreateOrder')->onQueue("Mail_Sender");
             $this->checkout_message = "Checkout has been add to our system, please check your email to verify your invoice!.";
         }
     }
